@@ -22,17 +22,17 @@ function makeHtmlButton() {
 /** starts a new game, handles cases of active game and game over */
 function startAndRestartGame(evt) {
   const button = evt.target;
-  const player1 = new Player("red");
-  const player2 = new Player("blue");
+  const player1 = new Player('red')
+  const player2 = new Player('blue')
   //create a new instance of Game with default args
   if (![...button.classList].includes("started")) {
-    new Game(6, 7, player1, player2);
+    new Game(player1, player2, 6, 7);
     button.classList.add("started");
     button.innerText = "Restart";
   } else {
     const board = document.getElementById("board");
     board.innerHTML = "";
-    new Game(6, 7, player1, player2);
+    new Game(player1, player2, 6, 7);
   }
 }
 
@@ -40,11 +40,12 @@ function startAndRestartGame(evt) {
 //where is this called? probably within game
 //need to create a web form
 
-class Player {
-  constructor(color) {
+class Player{
+  constructor(color){
     this.color = color;
   }
 }
+
 
 //my thinking is need to update game to take the player objects that will be created
 //in start and restart game
@@ -63,7 +64,7 @@ class Game {
 
     // create board model and render
     this.makeBoard();
-    this.makeHtmlBoard();
+    this.makeHtmlBoard(height, width);
   }
 
   makeBoard() {
@@ -73,7 +74,7 @@ class Game {
   }
 
   /** makeHtmlBoard: make HTML table and row of column tops. */
-  makeHtmlBoard() {
+  makeHtmlBoard(height, width) {
     const htmlBoard = document.getElementById("board");
 
     // make column tops (clickable area for adding a piece to that column)
@@ -81,7 +82,7 @@ class Game {
     top.setAttribute("id", "column-top");
     top.addEventListener("click", this.boundHandleClick);
 
-    for (let x = 0; x < this.width; x++) {
+    for (let x = 0; x < width; x++) {
       const headCell = document.createElement("td");
       headCell.setAttribute("id", x);
       top.append(headCell);
@@ -90,10 +91,11 @@ class Game {
     htmlBoard.append(top);
 
     // make main part of board
-    for (let y = 0; y < this.height; y++) {
+    for (let y = 0; y < height; y++) {
+
       const row = document.createElement("tr");
 
-      for (let x = 0; x < this.width; x++) {
+      for (let x = 0; x < width; x++) {
         const cell = document.createElement("td");
         cell.setAttribute("id", `c-${y}-${x}`);
         row.append(cell);
@@ -116,15 +118,15 @@ class Game {
   /** placeInTable: update DOM to place piece into HTML table of board */
   //TODO: refactor to pass in the current player to this function at calltime
   placeInTable(y, x) {
-    console.log(this.currPlayer);
+    console.log(this.currPlayer)
     const piece = document.createElement("div");
-    const currPlayer = this.currPlayer;
+    const currPlayer = this.currPlayer
     piece.classList.add("piece");
     // piece.classList.add(`p${this.currPlayer}`);
-    console.log(this.currPlayer);
+    console.log(this.currPlayer)
     // piece.classList.add(`${this.currPlayer}`);
     // need to change this to hardcode the background
-    piece.style.backgroundColor = `${currPlayer.color}`;
+    piece.style.backgroundColor = `${currPlayer.color}`
     piece.style.top = -50 * (y + 2);
 
     const spot = document.getElementById(`c-${y}-${x}`);
@@ -140,8 +142,8 @@ class Game {
     topRow.removeEventListener("click", this.boundHandleClick);
   }
 
-  /** handleClick: handle click of column top to play piece */
-  //TODO: refactor to pass current player around
+/** handleClick: handle click of column top to play piece */
+//TODO: refactor to pass current player around
   handleClick(evt) {
     // grab instance properties
     let board = this.board;
@@ -172,11 +174,11 @@ class Game {
     }
 
     // switch players
-    console.log(this.currPlayer, this.p1, this.p2);
+    console.log(this.currPlayer, this.p1, this.p2)
     this.currPlayer = currPlayer === this.p1 ? this.p2 : this.p1;
   }
 
-  /** checkForWin: check board cell-by-cell for "does a win start here?" */
+/** checkForWin: check board cell-by-cell for "does a win start here?" */
   checkForWin() {
     const _win = (cells) => {
       // Check four cells to see if they're all color of current player
