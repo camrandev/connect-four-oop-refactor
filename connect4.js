@@ -42,6 +42,9 @@ class Game {
     this.currPlayer = 1;
     this.board = [];
 
+    // bind methods
+    this.boundHandleClick = this.handleClick.bind(this);
+
     // create board model and render
     this.makeBoard();
     this.makeHtmlBoard();
@@ -66,7 +69,7 @@ class Game {
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement("tr");
     top.setAttribute("id", "column-top");
-    top.addEventListener("click", this.handleClick.bind(this));
+    top.addEventListener("click", this.boundHandleClick);
 
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement("td");
@@ -114,7 +117,7 @@ class Game {
     // freeze game
     const topRow = document.getElementById("column-top");
     console.log('topRow=',topRow);
-    topRow.removeEventListener("click", this.handleClick.bind(this))
+    topRow.removeEventListener("click", this.boundHandleClick)
   }
 
   handleClick(evt) {
