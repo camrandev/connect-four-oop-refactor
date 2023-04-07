@@ -1,4 +1,5 @@
 "use strict";
+//FIXME:ideally would show board as default, even before clicking start - can work on how to implement
 /** Connect Four
  *
  * Player 1 and 2 alternate turns. On each turn, a piece is dropped down a
@@ -21,24 +22,40 @@ function makeHtmlButton() {
 /** starts a new game, handles cases of active game and game over */
 function startAndRestartGame(evt) {
   const button = evt.target;
+  const player1 = new Player("red");
+  const player2 = new Player("blue");
   //create a new instance of Game with default args
   if (![...button.classList].includes("started")) {
-    new Game(6, 7);
+    new Game(6, 7, player1, player2);
     button.classList.add("started");
     button.innerText = "Restart";
   } else {
     const board = document.getElementById("board");
     board.innerHTML = "";
-    new Game(6, 7);
+    new Game(6, 7, player1, player2);
   }
 }
 
+//create a player class -> takes a color (from a webform)
+//where is this called? probably within game
+//need to create a web form
+
+class Player {
+  constructor(color) {
+    this.color = color;
+  }
+}
+
+//my thinking is need to update game to take the player objects that will be created
+//in start and restart game
 class Game {
-  constructor(width, height) {
+  constructor(p1, p2, width, height) {
     // initialize properties
     this.width = width;
     this.height = height;
-    this.currPlayer = 1;
+    this.p1 = p1;
+    this.p2 = p2;
+    this.currPlayer = p1;
     this.board = [];
 
     // bind methods
@@ -97,10 +114,17 @@ class Game {
   }
 
   /** placeInTable: update DOM to place piece into HTML table of board */
+  //TODO: refactor to pass in the current player to this function at calltime
   placeInTable(y, x) {
+    console.log(this.currPlayer);
     const piece = document.createElement("div");
+    const currPlayer = this.currPlayer;
     piece.classList.add("piece");
-    piece.classList.add(`p${this.currPlayer}`);
+    // piece.classList.add(`p${this.currPlayer}`);
+    console.log(this.currPlayer);
+    // piece.classList.add(`${this.currPlayer}`);
+    // need to change this to hardcode the background
+    piece.style.backgroundColor = `${currPlayer.color}`;
     piece.style.top = -50 * (y + 2);
 
     const spot = document.getElementById(`c-${y}-${x}`);
@@ -116,7 +140,8 @@ class Game {
     topRow.removeEventListener("click", this.boundHandleClick);
   }
 
-/** handleClick: handle click of column top to play piece */
+  /** handleClick: handle click of column top to play piece */
+  //TODO: refactor to pass current player around
   handleClick(evt) {
     // grab instance properties
     let board = this.board;
@@ -147,10 +172,11 @@ class Game {
     }
 
     // switch players
-    this.currPlayer = currPlayer === 1 ? 2 : 1;
+    console.log(this.currPlayer, this.p1, this.p2);
+    this.currPlayer = currPlayer === this.p1 ? this.p2 : this.p1;
   }
 
-/** checkForWin: check board cell-by-cell for "does a win start here?" */
+  /** checkForWin: check board cell-by-cell for "does a win start here?" */
   checkForWin() {
     const _win = (cells) => {
       // Check four cells to see if they're all color of current player
