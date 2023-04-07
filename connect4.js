@@ -11,6 +11,21 @@
 //Game
 //-GameLogic
 //-UILogic
+function makeHtmlButton() {
+  const gameBoard = document.getElementById("game");
+  const startButton = document.createElement("button");
+  startButton.innerText = "start";
+  startButton.addEventListener("click", new Game(6, 7));
+  //attach event listener, passing in new Game as the callback
+  gameBoard.append(startButton);
+}
+
+function startAndRestartGame() {
+  //create a new instance of Game with default args
+  
+
+  //end the current game, and do the above
+}
 
 class Game {
   constructor(width, height) {
@@ -26,6 +41,11 @@ class Game {
   }
 
   //methods
+
+  //makeHtmlButton
+
+  //startGame
+
   makeBoard() {
     for (let y = 0; y < this.height; y++) {
       this.board.push(Array.from({ length: this.width }));
@@ -34,7 +54,8 @@ class Game {
 
   makeHtmlBoard() {
     const htmlBoard = document.getElementById("board");
-
+    //     htmlBoard.innerHtml = '';
+    // console.log('htmlBoard.innerHtml=', htmlBoard.innerHtml)
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement("tr");
     top.setAttribute("id", "column-top");
@@ -60,7 +81,6 @@ class Game {
 
       htmlBoard.append(row);
     }
-
   }
 
   findSpotForCol(x) {
@@ -119,7 +139,6 @@ class Game {
   }
 
   checkForWin() {
-
     const _win = (cells) => {
       // Check four cells to see if they're all color of current player
       //  - cells: list of four (y, x) cells
@@ -133,7 +152,7 @@ class Game {
           x < this.width &&
           this.board[y][x] === this.currPlayer
       );
-    }
+    };
 
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -346,4 +365,5 @@ class Game {
 // makeBoard();
 // makeHtmlBoard();
 
-new Game(6, 7);
+// new Game(6, 7);
+makeHtmlButton();
