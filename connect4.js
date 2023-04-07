@@ -14,17 +14,24 @@
 function makeHtmlButton() {
   const gameBoard = document.getElementById("game");
   const startButton = document.createElement("button");
-  startButton.innerText = "start";
-  startButton.addEventListener("click", new Game(6, 7));
+  startButton.innerText = "Start";
+  startButton.addEventListener("click", startAndRestartGame);
   //attach event listener, passing in new Game as the callback
   gameBoard.append(startButton);
 }
 
-function startAndRestartGame() {
+function startAndRestartGame(evt) {
+  const button = evt.target;
   //create a new instance of Game with default args
-  
-
-  //end the current game, and do the above
+  if (![...button.classList].includes('started')) {
+    new Game(6, 7);
+    button.classList.add('started');
+    button.innerText = "Restart";
+  } else {
+    const board = document.getElementById("board");
+    board.innerHTML = "";
+    new Game(6,7);
+  }
 }
 
 class Game {
@@ -104,6 +111,10 @@ class Game {
 
   endGame(msg) {
     alert(msg);
+    // freeze game
+    const topRow = document.getElementById("column-top");
+    console.log('topRow=',topRow);
+    topRow.removeEventListener("click", this.handleClick.bind(this))
   }
 
   handleClick(evt) {
@@ -126,12 +137,13 @@ class Game {
 
     // check for win
     if (this.checkForWin()) {
-      return this.endGame(`Player ${currPlayer} won!`);
+      return this.endGame(`Player ${currPlayer} won!
+      Please click Restart to play another game!`);
     }
 
     // check for tie
     if (board.every((row) => row.every((cell) => cell))) {
-      return this.endGame("Tie!");
+      return this.endGame("Tie! Please click Restart to play another game!");
     }
 
     // switch players
