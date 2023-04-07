@@ -1,5 +1,7 @@
 "use strict";
 //FIXME:ideally would show board as default, even before clicking start - can work on how to implement
+//TODO:build HTML form + get user color input for the players
+
 /** Connect Four
  *
  * Player 1 and 2 alternate turns. On each turn, a piece is dropped down a

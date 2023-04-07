@@ -12,6 +12,11 @@ beforeEach(function () {
   testGame = new Game(testP1, testP2, 6, 7);
 });
 
+/** clear the board after each set of tests */
+
+afterEach(function () {
+  document.getElementById('board').innerHTML = '';
+});
 
 describe('makeBoard', function () {
 
