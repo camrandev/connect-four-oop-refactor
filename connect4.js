@@ -120,12 +120,12 @@ class Game {
   /** placeInTable: update DOM to place piece into HTML table of board */
   //TODO: refactor to pass in the current player to this function at calltime
   placeInTable(y, x) {
-    console.log(this.currPlayer)
+
     const piece = document.createElement("div");
     const currPlayer = this.currPlayer
     piece.classList.add("piece");
     // piece.classList.add(`p${this.currPlayer}`);
-    console.log(this.currPlayer)
+
     // piece.classList.add(`${this.currPlayer}`);
     // need to change this to hardcode the background
     piece.style.backgroundColor = `${currPlayer.color}`
@@ -140,7 +140,7 @@ class Game {
     alert(msg);
     // freeze game
     const topRow = document.getElementById("column-top");
-    console.log("topRow=", topRow);
+
     topRow.removeEventListener("click", this.boundHandleClick);
   }
 
